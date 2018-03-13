@@ -14,7 +14,7 @@ public class DBHelper {
     public static void save(Object object) {
         session = HibernateUtil.getSessionFactory().openSession();
         try {
-            transaction.begin();
+            transaction = session.beginTransaction();
             session.save(object);
             transaction.commit();
         } catch (HibernateException ex) {
@@ -28,7 +28,7 @@ public class DBHelper {
     public static void update(Object object) {
         session = HibernateUtil.getSessionFactory().openSession();
         try {
-            transaction.begin();
+            transaction = session.beginTransaction();
             session.update(object);
             transaction.commit();
         } catch (HibernateException ex) {
@@ -42,7 +42,7 @@ public class DBHelper {
     public static void delete(Object object) {
         session = HibernateUtil.getSessionFactory().openSession();
         try {
-            transaction.begin();
+            transaction = session.beginTransaction();
             session.delete(object);
             transaction.commit();
         } catch (HibernateException ex) {
@@ -87,7 +87,7 @@ public class DBHelper {
     public static <T> List<T> getAll(Class classType) {
         session = HibernateUtil.getSessionFactory().openSession();
         List<T> results = null;
-        transaction.begin();
+        transaction = session.beginTransaction();
         Criteria cr = session.createCriteria(classType);
         results = getList(cr);
         return results;
@@ -96,6 +96,7 @@ public class DBHelper {
     public static <T> T find(Class classType, int id) {
         session = HibernateUtil.getSessionFactory().openSession();
         T results = null;
+        transaction = session.beginTransaction();
         Criteria cr = session.createCriteria(classType);
         cr.add(Restrictions.eq("id", id));
         results = getUniqueResult(cr);

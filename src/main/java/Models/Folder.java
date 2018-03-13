@@ -1,8 +1,12 @@
 package Models;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name="folders")
 public class Folder {
+    private int id;
     private String title;
     private List<File> files;
 
@@ -12,6 +16,18 @@ public class Folder {
         this.title = title;
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Column(name="title")
     public String getTitle() {
         return title;
     }
@@ -20,6 +36,7 @@ public class Folder {
         this.title = title;
     }
 
+    @OneToMany(mappedBy = "folder", fetch = FetchType.EAGER)
     public List<File> getFiles() {
         return files;
     }
