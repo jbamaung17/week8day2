@@ -1,6 +1,7 @@
 package DB;
 
 import org.hibernate.*;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ public class DBHelper {
     private static Session session;
     private static Transaction transaction;
 
-    private static void save(Object object) {
+    public static void save(Object object) {
         session = HibernateUtil.getSessionFactory().openSession();
         try {
             transaction.begin();
@@ -24,7 +25,7 @@ public class DBHelper {
         }
     }
 
-    private static void update(Object object) {
+    public static void update(Object object) {
         session = HibernateUtil.getSessionFactory().openSession();
         try {
             transaction.begin();
@@ -38,7 +39,7 @@ public class DBHelper {
         }
     }
 
-    private static void delete(Object object) {
+    public static void delete(Object object) {
         session = HibernateUtil.getSessionFactory().openSession();
         try {
             transaction.begin();
@@ -83,14 +84,21 @@ public class DBHelper {
         return result;
     }
 
-
-
-    private static <T> List<T> getAll(Class classType) {
+    public static <T> List<T> getAll(Class classType) {
         session = HibernateUtil.getSessionFactory().openSession();
         List<T> results = null;
         transaction.begin();
         Criteria cr = session.createCriteria(classType);
         results = getList(cr);
+        return results;
+    }
+
+    public static <T> T find(Class classType, int id) {
+        session = HibernateUtil.getSessionFactory().openSession();
+        T results = null;
+        Criteria cr = session.createCriteria(classType);
+        cr.add(Restrictions.eq("id", id));
+        results = getUniqueResult(cr);
         return results;
     }
 
