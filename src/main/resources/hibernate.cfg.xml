@@ -13,5 +13,6 @@
         <property name="show_sql">true</property>
         <mapping class="Models.File"/>
         <mapping class="Models.Folder"/>
+        <mapping class="Models.Owner"/>
     </session-factory>
 </hibernate-configuration>
